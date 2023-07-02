@@ -1,0 +1,27 @@
+name: Release .osk
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release-osk:
+    name: Release .osk
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Create .osk
+        run:  git archive --output='./osue.osk' --format=zip HEAD
+      
+      - name: Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: 'osue.osk'
+          makeLatest: true
+          generateReleaseNotes: true
